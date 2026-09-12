@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="website/assets/icon.png" width="84" alt="Screenshot Brain logo" />
+  <img src="docs/assets/icon.png" width="84" alt="Screenshot Brain logo" />
 </p>
 
 <h1 align="center">Screenshot Brain</h1>
@@ -155,7 +155,7 @@ src/
   state/        store.tsx — navigation, data, settings, toasts
   styles/       app.css — editorial design system (light + dark)
 android/        Capacitor host · ScreenshotBrainPlugin.kt-java · share targets · keystore config
-website/        landing page (GitHub Pages)
+docs/           landing page (GitHub Pages, served from /docs)
 ```
 
 ## ⚠️ Known limitations
