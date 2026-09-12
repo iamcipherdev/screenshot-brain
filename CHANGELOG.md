@@ -1,5 +1,29 @@
 # Changelog
 
+## v1.2.0 — 2026-09-13
+
+The "public launch" release: complete product website, hardened APK distribution.
+
+### Added
+- Complete marketing website (docs/): hero, real product showcase (Home, Search, Brain Chat,
+  Library, Cleanup, Detail), 8 feature sections, "Chat with your screenshot memory" section with
+  a grounded-answer example, how-it-works, privacy breakdown, download section, open-source
+  overview, 8-question FAQ.
+- Download buttons always point at the latest GitHub Release APK: permanent
+  `releases/latest/download/` links plus a small script that fetches release metadata
+  (version, APK size, release date, filename) from the GitHub API, with static fallbacks.
+- SEO: Open Graph + Twitter cards, canonical URL, JSON-LD SoftwareApplication schema,
+  OG share image generated from real app screenshots.
+- Full-page screenshot of the Detail screen added to the site assets.
+
+### Fixed
+- **Release signing**: the v1.1.0 APK attached by CI was debug-signed (the repo has no keystore
+  secrets). CI no longer attaches APKs when the keystore secret is absent — releases are
+  published from local builds signed with the production keystore. v1.1.0's asset has been
+  replaced with the properly signed build; users on the debug-signed copy should reinstall from
+  the v1.2.0 release.
+- package.json version now tracks the Android versionName.
+
 ## v1.1.0 — 2026-09-12
 
 The "real assistant" release.

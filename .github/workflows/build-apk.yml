@@ -69,8 +69,21 @@ jobs:
           cp android/app/build/outputs/apk/release/app-release.apk "ScreenshotBrain-v${VER}.apk"
           ls -la ScreenshotBrain-*
 
-      - name: Attach APKs to the release
+      - name: Check if CI can sign a release APK
         if: startsWith(github.ref, 'refs/tags/')
+        id: signing
+        env:
+          SB_KEYSTORE_B64: ${{ secrets.SB_KEYSTORE_B64 }}
+        run: |
+          if [ -n "$SB_KEYSTORE_B64" ]; then
+            echo "attach=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "::warning::No SB_KEYSTORE_B64 secret configured. CI built a debug-signed APK for validation only; it will NOT be attached to the public release. Releases are published from a local build signed with the production keystore."
+            echo "attach=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Attach signed APKs to the release
+        if: startsWith(github.ref, 'refs/tags/') && steps.signing.outputs.attach == 'true'
         uses: softprops/action-gh-release@v2
         with:
           files: |

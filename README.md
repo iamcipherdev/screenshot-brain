@@ -11,8 +11,8 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/iamcipherdev/screenshot-brain/releases/latest"><img alt="Release" src="https://img.shields.io/badge/download-v1.1.0-167A55" /></a>
-  <img alt="Platform" src="https://img.shields.io/badge/platform-Android%208.0%2B-191B18" />
+  <a href="https://github.com/iamcipherdev/screenshot-brain/releases/latest"><img alt="Release" src="https://img.shields.io/badge/download-v1.2.0-167A55" /></a>
+  <img alt="Platform" src="https://img.shields.io/badge/platform-Android%207.0%2B-191B18" />
   <img alt="License" src="https://img.shields.io/badge/license-MIT-84887F" />
   <img alt="AI" src="https://img.shields.io/badge/AI-optional%20%C2%B7%20your%20key-BFDCCD" />
 </p>
@@ -49,10 +49,10 @@ Made by **CIPHER**.
 
 ## 📱 Download
 
-Grab **`ScreenshotBrain-v1.1.0.apk`** from the
+Grab **`ScreenshotBrain-v1.2.0.apk`** from the
 [**Releases page**](https://github.com/iamcipherdev/screenshot-brain/releases/latest).
 
-- Android 8.0+ (API 26)
+- Android 7.0+ (API 24)
 - No account, no telemetry, no analytics
 - AI features need your own free [Gemini API key](https://aistudio.google.com/apikey) (everything else works without it)
 
@@ -104,7 +104,7 @@ Extra controls: PIN/biometric app lock · blur sensitive screenshots · exclude 
 
 ## 🛠 Technology
 
-React 19 · TypeScript (strict) · Capacitor 8 · Kotlin · ML Kit Text Recognition · Gemini API (optional) · IndexedDB · AndroidX Biometric · Android 8.0+
+React 19 · TypeScript (strict) · Capacitor 8 · Kotlin · ML Kit Text Recognition · Gemini API (optional) · IndexedDB · AndroidX Biometric · Android 7.0+
 
 ## 🔨 Build it yourself
 

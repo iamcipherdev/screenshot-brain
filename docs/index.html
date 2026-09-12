@@ -4,11 +4,45 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Screenshot Brain — Your screenshots remember everything. Now you can too.</title>
-<meta name="description" content="Screenshot Brain turns forgotten screenshots into searchable personal memory using on-device OCR, smart organization, and grounded AI. Made by CIPHER. Free and open source." />
+<meta name="description" content="Screenshot Brain turns forgotten screenshots into searchable personal memory using OCR, smart organization, AI-powered search, and grounded screenshot chat. Free, open source, for Android." />
+<link rel="canonical" href="https://iamcipherdev.github.io/screenshot-brain/" />
+<meta name="theme-color" content="#F7F6F2" />
+
+<!-- Open Graph -->
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Screenshot Brain" />
+<meta property="og:title" content="Screenshot Brain — Your screenshots remember everything. Now you can too." />
+<meta property="og:description" content="Turn forgotten screenshots into searchable personal memory: on-device OCR, smart organization, AI-powered search, and grounded screenshot chat. Free and open source for Android." />
+<meta property="og:url" content="https://iamcipherdev.github.io/screenshot-brain/" />
+<meta property="og:image" content="https://iamcipherdev.github.io/screenshot-brain/assets/og-image.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Screenshot Brain — Your screenshots remember everything." />
+<meta name="twitter:description" content="OCR, smart organization, AI-powered search, and grounded screenshot chat. Free and open source for Android." />
+<meta name="twitter:image" content="https://iamcipherdev.github.io/screenshot-brain/assets/og-image.png" />
+
 <link rel="icon" type="image/png" href="assets/icon.png" />
+<link rel="apple-touch-icon" href="assets/icon.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Screenshot Brain",
+  "operatingSystem": "Android 7.0+",
+  "applicationCategory": "UtilitiesApplication",
+  "description": "Screenshot Brain turns forgotten screenshots into searchable personal memory using OCR, smart organization, AI-powered search, and grounded screenshot chat.",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "softwareVersion": "1.2.0",
+  "author": { "@type": "Organization", "name": "CIPHER" },
+  "license": "https://github.com/iamcipherdev/screenshot-brain/blob/main/LICENSE"
+}
+</script>
+
 <style>
   :root {
     --bg: #F7F6F2;
@@ -22,8 +56,10 @@
     --accent: #167A55;
     --accent-soft: #E3F0E9;
     --accent-line: #BFDCCD;
+    --amber-soft: #F7ECDA;
+    --amber-line: #E4CBA0;
     --radius: 18px;
-    --max: 1060px;
+    --max: 1080px;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
@@ -37,6 +73,8 @@
   img { max-width: 100%; display: block; }
   a { color: inherit; }
   .wrap { max-width: var(--max); margin: 0 auto; padding: 0 22px; }
+  .skip { position: absolute; left: -9999px; top: 0; background: var(--ink); color: var(--bg); padding: 10px 16px; border-radius: 0 0 10px 0; z-index: 99; }
+  .skip:focus { left: 0; }
   .eyebrow {
     font-size: 12px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase;
     color: var(--accent); margin-bottom: 14px;
@@ -50,7 +88,6 @@
   }
   .btn:hover { transform: translateY(-1px); border-color: var(--ink); }
   .btn-primary { background: var(--ink); color: var(--bg); border-color: var(--ink); }
-  .btn-primary:hover { border-color: var(--ink); }
   .btn svg { flex: none; }
 
   /* nav */
@@ -59,18 +96,19 @@
     background: rgba(247 246 242 / .92); backdrop-filter: blur(8px);
     border-bottom: 1px solid var(--line);
   }
-  .nav { display: flex; align-items: center; gap: 22px; height: 62px; }
+  .nav { display: flex; align-items: center; gap: 20px; height: 62px; }
   .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; margin-right: auto; }
   .brand img { width: 32px; height: 32px; border-radius: 9px; }
   .wordmark { font-weight: 700; font-size: 16.5px; }
   .nav a.link { font-size: 14px; font-weight: 500; color: var(--ink-2); text-decoration: none; }
   .nav a.link:hover { color: var(--ink); }
-  @media (max-width: 640px) { .nav a.link { display: none; } }
+  .nav .btn-nav { font-size: 13.5px; padding: 8px 14px; border-radius: 10px; }
+  @media (max-width: 720px) { .nav a.link { display: none; } }
 
   /* hero */
-  .hero { padding: 84px 0 60px; }
-  .hero h1 { font-size: clamp(38px, 7vw, 66px); line-height: 1.04; font-weight: 700; max-width: 15ch; }
-  .hero .sub { font-size: clamp(16px, 2.4vw, 19px); color: var(--ink-2); max-width: 54ch; margin: 22px 0 30px; }
+  .hero { padding: 80px 0 56px; }
+  .hero h1 { font-size: clamp(36px, 6.4vw, 62px); line-height: 1.06; font-weight: 700; }
+  .hero .sub { font-size: clamp(16px, 2.4vw, 19px); color: var(--ink-2); max-width: 56ch; margin: 22px 0 30px; }
   .hero .cta { display: flex; gap: 12px; flex-wrap: wrap; }
   .hero .note { margin-top: 16px; font-size: 13px; color: var(--ink-3); }
   .badge {
@@ -80,30 +118,36 @@
     border-radius: 999px; padding: 6px 14px; margin-bottom: 26px;
   }
 
-  /* demo strip */
-  .demo { padding: 40px 0 90px; }
-  .demo-strip {
-    display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px;
-    align-items: start;
-  }
+  section { padding: 72px 0; border-top: 1px solid var(--line); }
+  section h2 { font-size: clamp(26px, 4vw, 36px); line-height: 1.15; max-width: 26ch; }
+  section .lede { color: var(--ink-2); max-width: 64ch; margin-top: 14px; font-size: 16.5px; }
+
+  /* showcase */
+  .shot-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 44px; }
+  @media (max-width: 860px) { .shot-grid { grid-template-columns: repeat(3, 1fr); gap: 12px; } }
+  @media (max-width: 620px) { .shot-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; } }
   .phone {
     border: 1px solid var(--line); border-radius: 22px; overflow: hidden;
     background: var(--raise); box-shadow: 0 2px 6px rgb(25 27 24 / .05), 0 24px 50px -24px rgb(25 27 24 / .25);
-    transition: transform .25s ease;
+    transition: transform .25s ease; margin: 0;
   }
   .phone:hover { transform: translateY(-4px); }
   .phone img { width: 100%; }
-  .phone figcaption { font-size: 12px; font-weight: 600; color: var(--ink-3); text-align: center; padding: 9px 6px; border-top: 1px solid var(--line); }
-  @media (max-width: 900px) { .demo-strip { grid-template-columns: repeat(3, 1fr); } .phone:nth-child(n+4) { display: none; } }
-  @media (max-width: 560px) { .demo-strip { grid-template-columns: repeat(2, 1fr); } .phone:nth-child(n+3) { display: none; } }
+  .phone figcaption { font-size: 12.5px; font-weight: 600; color: var(--ink-2); text-align: center; padding: 10px 8px; border-top: 1px solid var(--line); }
+  .shot-note { margin-top: 18px; font-size: 13px; color: var(--ink-3); }
 
-  section { padding: 72px 0; border-top: 1px solid var(--line); }
-  section h2 { font-size: clamp(26px, 4vw, 36px); line-height: 1.15; max-width: 24ch; }
-  section .lede { color: var(--ink-2); max-width: 62ch; margin-top: 14px; font-size: 16.5px; }
+  /* detail deep-dive row */
+  .detail-row { display: grid; grid-template-columns: auto 1fr; gap: 44px; margin-top: 22px; align-items: center; }
+  @media (max-width: 760px) { .detail-row { grid-template-columns: 1fr; gap: 24px; } }
+  .detail-row .phone.tall { max-width: 300px; margin: 0 auto; }
+  .check-list { list-style: none; margin-top: 20px; display: grid; gap: 12px; }
+  .check-list li { display: flex; gap: 11px; font-size: 15px; color: var(--ink-2); align-items: flex-start; }
+  .check-list li b { color: var(--ink); font-weight: 600; }
+  .check-list svg { flex: none; margin-top: 3px; color: var(--accent); }
 
   /* features */
-  .feat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 42px; }
-  @media (max-width: 860px) { .feat-grid { grid-template-columns: 1fr 1fr; } }
+  .feat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 42px; }
+  @media (max-width: 980px) { .feat-grid { grid-template-columns: 1fr 1fr; } }
   @media (max-width: 560px) { .feat-grid { grid-template-columns: 1fr; } }
   .feat {
     background: var(--raise); border: 1px solid var(--line); border-radius: var(--radius);
@@ -114,25 +158,55 @@
     display: flex; align-items: center; justify-content: center; margin-bottom: 16px;
     color: var(--accent);
   }
-  .feat h3 { font-size: 17px; margin-bottom: 7px; }
-  .feat p { font-size: 14.5px; color: var(--ink-2); }
+  .feat h3 { font-size: 16.5px; margin-bottom: 7px; }
+  .feat p { font-size: 14px; color: var(--ink-2); }
 
-  /* privacy split */
-  .split { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 40px; }
-  @media (max-width: 700px) { .split { grid-template-columns: 1fr; } }
-  .panel { border-radius: var(--radius); padding: 26px 24px; border: 1px solid var(--line); background: var(--raise); }
-  .panel.cloud { background: #F7ECDA; border-color: #E4CBA0; }
-  .panel h3 { display: flex; align-items: center; gap: 9px; font-size: 16px; margin-bottom: 14px; }
-  .panel ul { list-style: none; }
-  .panel li { font-size: 14.5px; color: var(--ink-2); padding: 7px 0 7px 24px; position: relative; }
-  .panel li::before { content: '—'; position: absolute; left: 0; color: var(--ink-3); }
-  .privacy-note { margin-top: 22px; font-size: 14px; color: var(--ink-3); max-width: 72ch; }
-
-  /* how */
-  .steps { counter-reset: step; margin-top: 40px; display: grid; gap: 0; }
-  .step {
-    display: flex; gap: 20px; padding: 20px 4px; border-bottom: 1px solid var(--line); align-items: baseline;
+  /* brain chat section */
+  .brain-split { display: grid; grid-template-columns: 1fr 1fr; gap: 44px; margin-top: 40px; align-items: start; }
+  @media (max-width: 860px) { .brain-split { grid-template-columns: 1fr; gap: 30px; } }
+  .q-chips { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
+  .q-chip {
+    font-size: 14px; font-weight: 500; color: var(--ink);
+    background: var(--raise); border: 1px solid var(--line-strong);
+    border-radius: 999px; padding: 9px 16px;
   }
+  .grounded-card {
+    background: var(--raise); border: 1px solid var(--line); border-radius: 22px;
+    padding: 26px 24px; box-shadow: 0 2px 6px rgb(25 27 24 / .05), 0 24px 50px -30px rgb(25 27 24 / .3);
+  }
+  .grounded-card .who { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+  .grounded-card .who .dot {
+    width: 34px; height: 34px; border-radius: 10px; background: var(--accent-soft); color: var(--accent);
+    display: flex; align-items: center; justify-content: center; flex: none;
+  }
+  .grounded-card .who b { font-size: 14.5px; display: block; line-height: 1.2; }
+  .grounded-card .who span { font-size: 12px; color: var(--ink-3); }
+  .grounded-card .q { font-size: 14px; color: var(--ink-2); background: var(--sunk); border-radius: 14px; padding: 10px 14px; margin-bottom: 16px; }
+  .grounded-card .q b { color: var(--ink); font-weight: 600; }
+  .grounded-card .answer { font-size: 15px; color: var(--ink-2); }
+  .grounded-card .answer b { color: var(--ink); font-weight: 600; }
+  .cite {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 18px; height: 18px; border-radius: 6px; margin: 0 1px;
+    background: var(--accent-soft); color: var(--accent);
+    font-size: 11px; font-weight: 700; vertical-align: 2px;
+  }
+  .src-title { font-size: 11.5px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-3); margin: 20px 0 10px; }
+  .src-row { display: flex; gap: 12px; flex-wrap: wrap; }
+  .src {
+    display: flex; align-items: center; gap: 9px; text-decoration: none;
+    border: 1px solid var(--line); border-radius: 12px; padding: 6px 12px 6px 6px; background: var(--bg);
+  }
+  .src img { width: 36px; height: 36px; border-radius: 8px; object-fit: cover; }
+  .src .n { font-size: 11px; font-weight: 700; color: var(--accent); }
+  .src .t { font-size: 12px; font-weight: 600; color: var(--ink); line-height: 1.25; }
+  .grounded-note { margin-top: 18px; font-size: 13px; color: var(--ink-3); display: flex; gap: 8px; align-items: flex-start; }
+  .grounded-note svg { flex: none; margin-top: 2px; color: var(--accent); }
+  .illus-tag { font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 12px; }
+
+  /* how it works */
+  .steps { counter-reset: step; margin-top: 40px; display: grid; gap: 0; max-width: 760px; }
+  .step { display: flex; gap: 20px; padding: 20px 4px; border-bottom: 1px solid var(--line); align-items: baseline; }
   .step:last-child { border-bottom: none; }
   .step::before {
     counter-increment: step; content: counter(step, decimal-leading-zero);
@@ -142,24 +216,18 @@
   .step b { font-size: 16.5px; display: block; }
   .step p { font-size: 14.5px; color: var(--ink-2); margin-top: 2px; }
 
-  /* tech */
-  .tech-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 34px; }
-  .tech {
-    font-size: 14px; font-weight: 600; color: var(--ink-2);
-    background: var(--raise); border: 1px solid var(--line-strong);
-    border-radius: 999px; padding: 9px 18px;
-  }
-
-  /* faq */
-  .faq { margin-top: 36px; border-top: 1px solid var(--line); }
-  details { border-bottom: 1px solid var(--line); }
-  summary {
-    cursor: pointer; font-weight: 600; font-size: 16px; padding: 18px 4px; list-style: none;
-    display: flex; justify-content: space-between; align-items: center; gap: 12px;
-  }
-  summary::after { content: '+'; font-size: 20px; color: var(--accent); transition: transform .2s ease; }
-  details[open] summary::after { transform: rotate(45deg); }
-  details p { padding: 0 4px 18px; color: var(--ink-2); font-size: 14.5px; max-width: 70ch; }
+  /* privacy */
+  .split { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 40px; }
+  @media (max-width: 700px) { .split { grid-template-columns: 1fr; } }
+  .panel { border-radius: var(--radius); padding: 26px 24px; border: 1px solid var(--line); background: var(--raise); }
+  .panel.cloud { background: var(--amber-soft); border-color: var(--amber-line); }
+  .panel h3 { display: flex; align-items: center; gap: 9px; font-size: 16px; margin-bottom: 14px; }
+  .panel ul { list-style: none; }
+  .panel li { font-size: 14.5px; color: var(--ink-2); padding: 7px 0 7px 24px; position: relative; }
+  .panel li::before { content: '—'; position: absolute; left: 0; color: var(--ink-3); }
+  .privacy-notes { margin-top: 22px; display: grid; gap: 10px; max-width: 76ch; }
+  .privacy-notes p { font-size: 14px; color: var(--ink-2); display: flex; gap: 9px; }
+  .privacy-notes svg { flex: none; margin-top: 3px; color: var(--accent); }
 
   /* download */
   .download {
@@ -167,253 +235,563 @@
     padding: 54px 40px; text-align: center; margin: 26px 0 0;
   }
   .download h2 { color: var(--bg); margin: 0 auto; }
-  .download .lede { color: rgba(247 246 242 / .72); margin: 14px auto 28px; }
+  .download .lede { color: rgba(247 246 242 / .72); margin: 14px auto 30px; }
   .download .btn-primary { background: var(--bg); color: var(--ink); border-color: var(--bg); }
   .download .btn-ghost { background: transparent; color: var(--bg); border-color: rgba(247 246 242 / .35); }
   .download .btn-ghost:hover { border-color: var(--bg); }
   .download .cta { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
-  .download .note { margin-top: 16px; font-size: 12.5px; color: rgba(247 246 242 / .5); }
+  .meta-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;
+    max-width: 640px; margin: 30px auto 0;
+  }
+  @media (max-width: 560px) { .meta-grid { grid-template-columns: 1fr 1fr; } }
+  .meta {
+    border: 1px solid rgba(247 246 242 / .16); border-radius: 14px; padding: 13px 8px;
+  }
+  .meta .k { font-size: 10.5px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: rgba(247 246 242 / .55); }
+  .meta .v { font-family: 'Space Grotesk', sans-serif; font-size: 16px; font-weight: 600; margin-top: 3px; }
+  .download .note { margin-top: 18px; font-size: 12.5px; color: rgba(247 246 242 / .55); max-width: 60ch; margin-left: auto; margin-right: auto; }
+
+  /* open source */
+  .oss-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 40px; }
+  @media (max-width: 860px) { .oss-grid { grid-template-columns: 1fr; } }
+  .oss { background: var(--raise); border: 1px solid var(--line); border-radius: var(--radius); padding: 24px 22px; }
+  .oss h3 { font-size: 16px; margin-bottom: 12px; }
+  .oss p { font-size: 14px; color: var(--ink-2); }
+  .oss .tech-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+  .tech {
+    font-size: 12.5px; font-weight: 600; color: var(--ink-2);
+    background: var(--bg); border: 1px solid var(--line-strong);
+    border-radius: 999px; padding: 6px 12px;
+  }
+  .oss-cta { margin-top: 34px; display: flex; gap: 12px; flex-wrap: wrap; }
+
+  /* faq */
+  .faq { margin-top: 36px; border-top: 1px solid var(--line); max-width: 800px; }
+  details { border-bottom: 1px solid var(--line); }
+  summary {
+    cursor: pointer; font-weight: 600; font-size: 16px; padding: 18px 4px; list-style: none;
+    display: flex; justify-content: space-between; align-items: center; gap: 12px;
+  }
+  summary::-webkit-details-marker { display: none; }
+  summary::after { content: '+'; font-size: 20px; color: var(--accent); transition: transform .2s ease; flex: none; }
+  details[open] summary::after { transform: rotate(45deg); }
+  details p { padding: 0 4px 18px; color: var(--ink-2); font-size: 14.5px; max-width: 72ch; }
 
   footer.site { padding: 46px 0 60px; }
-  .foot { display: flex; justify-content: space-between; gap: 18px; flex-wrap: wrap; align-items: center; }
-  .foot .made { font-size: 13px; color: var(--ink-3); letter-spacing: .1em; text-transform: uppercase; }
+  .foot-top { display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap; align-items: flex-start; }
+  .foot-brand { display: flex; align-items: center; gap: 10px; }
+  .foot-brand img { width: 34px; height: 34px; border-radius: 9px; }
+  .foot-brand b { font-family: 'Space Grotesk', sans-serif; font-size: 16px; }
+  .foot .made { margin-top: 10px; font-size: 12.5px; color: var(--ink-3); letter-spacing: .1em; text-transform: uppercase; }
   .foot .made b { color: var(--accent); }
-  .foot nav { display: flex; gap: 18px; }
-  .foot a { font-size: 13.5px; color: var(--ink-2); text-decoration: none; }
-  .foot a:hover { color: var(--ink); }
+  .foot nav { display: flex; gap: 18px; flex-wrap: wrap; }
+  .foot nav a { font-size: 13.5px; color: var(--ink-2); text-decoration: none; }
+  .foot nav a:hover { color: var(--ink); }
+  .foot-bottom { margin-top: 30px; padding-top: 20px; border-top: 1px solid var(--line); font-size: 12.5px; color: var(--ink-3); display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+
+  /* reveal on scroll — only when JS adds .io to <html> (progressive enhancement) */
+  html.io .reveal { opacity: 0; transform: translateY(14px); transition: opacity .55s ease, transform .55s ease; }
+  html.io .reveal.in { opacity: 1; transform: none; }
 
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
     * { transition: none !important; animation: none !important; }
+    .reveal { opacity: 1; transform: none; }
   }
 </style>
 </head>
 <body>
-
+<a class="skip" href="#main">Skip to content</a>
 <header class="site">
   <div class="wrap nav">
     <a class="brand" href="#">
-      <img src="assets/icon.png" alt="Screenshot Brain icon" />
+      <img src="assets/icon.png" alt="Screenshot Brain icon" width="32" height="32" />
       <span class="wordmark">Screenshot Brain</span>
     </a>
+    <a class="link" href="#showcase">Screens</a>
     <a class="link" href="#features">Features</a>
+    <a class="link" href="#brain">Brain Chat</a>
     <a class="link" href="#privacy">Privacy</a>
     <a class="link" href="#faq">FAQ</a>
     <a class="link" href="https://github.com/iamcipherdev/screenshot-brain" target="_blank" rel="noopener">GitHub</a>
+    <a class="btn btn-primary btn-nav" href="#download">Download</a>
   </div>
 </header>
 
-<main>
-  <!-- HERO -->
+<main id="main">
+
+  <!-- ═══ HERO ═══ -->
   <div class="wrap hero">
     <span class="badge">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 3.5A2.5 2.5 0 0 0 7 6v.4A3 3 0 0 0 4.5 9.3a3 3 0 0 0-.9 5.2A3.1 3.1 0 0 0 6 19.6c.4 1 1.4 1.7 2.5 1.7 1.4 0 2.5-1.1 2.5-2.5V5.9c0-1.3-1-2.4-1.5-2.4Z"/><path d="M14.5 3.5A2.5 2.5 0 0 1 17 6v.4a3 3 0 0 1 2.5 2.9 3 3 0 0 1 .9 5.2A3.1 3.1 0 0 1 18 19.6c-.4 1-1.4 1.7-2.5 1.7-1.4 0-2.5-1.1-2.5-2.5V5.9c0-1.3 1-2.4 1.5-2.4Z"/></svg>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 3.5A2.5 2.5 0 0 0 7 6v.4A3 3 0 0 0 4.5 9.3a3 3 0 0 0-.9 5.2A3.1 3.1 0 0 0 6 19.6c.4 1 1.4 1.7 2.5 1.7 1.4 0 2.5-1.1 2.5-2.5V5.9c0-1.3-1-2.4-1.5-2.4Z"/><path d="M14.5 3.5A2.5 2.5 0 0 1 17 6v.4a3 3 0 0 1 2.5 2.9 3 3 0 0 1 .9 5.2A3.1 3.1 0 0 1 18 19.6c-.4 1-1.4 1.7-2.5 1.7-1.4 0-2.5-1.1-2.5-2.5V5.9c0-1.3 1-2.4 1.5-2.4Z"/></svg>
       Free · Open source · On-device OCR
     </span>
-    <h1>Your screenshots remember everything. Now you can too.</h1>
+    <h1>Your screenshots<br />remember everything.<br />Now you can too.</h1>
     <p class="sub">
       Screenshot Brain turns forgotten screenshots into searchable personal memory using OCR,
-      smart organization, and grounded AI — running privately on your Android phone.
+      smart organization, AI-powered search, and grounded screenshot chat.
     </p>
     <div class="cta">
-      <a class="btn btn-primary" href="https://github.com/iamcipherdev/screenshot-brain/releases/latest" target="_blank" rel="noopener">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11"/><path d="m7.5 10.5 4.5 4.5 4.5-4.5"/><path d="M5 19.5h14"/></svg>
-        Download Android App
+      <a class="btn btn-primary" data-apk-link href="https://github.com/iamcipherdev/screenshot-brain/releases/latest/download/ScreenshotBrain-v1.2.0.apk" target="_blank" rel="noopener">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11"/><path d="m7.5 10.5 4.5 4.5 4.5-4.5"/><path d="M5 19.5h14"/></svg>
+        Download for Android
       </a>
       <a class="btn" href="https://github.com/iamcipherdev/screenshot-brain" target="_blank" rel="noopener">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.47v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.9-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.52 2.34 1.08 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.1.39-1.99 1.03-2.69-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02a9.56 9.56 0 0 1 5 0c1.91-1.3 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.6 1.03 2.69 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85V21c0 .27.16.58.67.48A10 10 0 0 0 22 12 10 10 0 0 0 12 2Z"/></svg>
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.47v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.9-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.52 2.34 1.08 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.1.39-1.99 1.03-2.69-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02a9.56 9.56 0 0 1 5 0c1.91-1.3 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.6 1.03 2.69 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85V21c0 .27.16.58.67.48A10 10 0 0 0 22 12 10 10 0 0 0 12 2Z"/></svg>
         View on GitHub
       </a>
     </div>
-    <p class="note">Android 8.0+ · No account, no sign-up · Your key, your quota</p>
+    <p class="note">
+      Latest release: <span data-apk-version-full>v1.2.0</span> · Android 7.0+ · no account, no sign-up.
+      Android may ask you to allow installation from your browser, because the app is distributed
+      directly via GitHub Releases rather than Google Play.
+    </p>
   </div>
 
-  <!-- PRODUCT DEMO -->
-  <div class="wrap demo">
-    <div class="demo-strip">
-      <figure class="phone"><img src="assets/app-home.png" alt="Screenshot Brain home screen with library stats, Ask Brain and cleanup hints" loading="lazy" /><figcaption>Home</figcaption></figure>
-      <figure class="phone"><img src="assets/app-search.png" alt="Natural language search results with match reasons" loading="lazy" /><figcaption>Search</figcaption></figure>
-      <figure class="phone"><img src="assets/app-brain.png" alt="Ask Screenshot Brain chat with suggested questions" loading="lazy" /><figcaption>Brain Chat</figcaption></figure>
-      <figure class="phone"><img src="assets/app-cleanup.png" alt="Cleanup suggestions grouped with reasons and storage savings" loading="lazy" /><figcaption>Cleanup</figcaption></figure>
-      <figure class="phone"><img src="assets/app-library.png" alt="Full screenshot library grid with filters" loading="lazy" /><figcaption>Library</figcaption></figure>
+  <!-- ═══ PRODUCT SHOWCASE ═══ -->
+  <section id="showcase">
+    <div class="wrap">
+      <p class="eyebrow">The app</p>
+      <h2>Real screens, not concepts.</h2>
+      <p class="lede">Everything below is captured from the actual application.</p>
+
+      <div class="shot-grid reveal">
+        <figure class="phone">
+          <img src="assets/app-home.png" alt="Home screen: library stats, Ask Brain card, cleanup recommendations and recent screenshots" loading="lazy" width="420" height="940" />
+          <figcaption>Home</figcaption>
+        </figure>
+        <figure class="phone">
+          <img src="assets/app-search.png" alt="Natural-language search for 'university fee' with match reasons on every result" loading="lazy" width="420" height="940" />
+          <figcaption>Search</figcaption>
+        </figure>
+        <figure class="phone">
+          <img src="assets/app-brain.png" alt="Brain chat with suggested questions like 'What university fees did I save?'" loading="lazy" width="420" height="940" />
+          <figcaption>AI Brain Chat</figcaption>
+        </figure>
+        <figure class="phone">
+          <img src="assets/app-library.png" alt="Screenshot library grid with filters for Important, Duplicates and Favorites" loading="lazy" width="420" height="940" />
+          <figcaption>Screenshot Library</figcaption>
+        </figure>
+        <figure class="phone">
+          <img src="assets/app-cleanup.png" alt="Cleanup suggestions grouped by reason with estimated space savings" loading="lazy" width="420" height="940" />
+          <figcaption>Cleanup</figcaption>
+        </figure>
+        <figure class="phone">
+          <img src="assets/app-detail-card.png" alt="Screenshot detail: AI summary, tags and detected dates, deadlines, people, prices" loading="lazy" width="420" height="940" />
+          <figcaption>Screenshot Detail</figcaption>
+        </figure>
+      </div>
+      <p class="shot-note">Captured from Screenshot Brain v1.1.0 with the built-in demo library.</p>
+
+      <div class="detail-row reveal">
+        <figure class="phone tall">
+          <img src="assets/app-detail.png" alt="Detail screen of a university fee voucher with detected information" loading="lazy" width="420" height="1600" />
+        </figure>
+        <div>
+          <p class="eyebrow">Deep dive</p>
+          <h2>Every screenshot, understood.</h2>
+          <ul class="check-list">
+            <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4.5 12.5 5 5 10-11"/></svg><span><b>OCR text</b> — read on-device by ML Kit, fully offline, searchable instantly.</span></li>
+            <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4.5 12.5 5 5 10-11"/></svg><span><b>AI summary and tags</b> — a plain-language description of what the screenshot actually is.</span></li>
+            <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4.5 12.5 5 5 10-11"/></svg><span><b>Detected details</b> — dates, deadlines, people, organizations, prices, places and tasks.</span></li>
+            <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4.5 12.5 5 5 10-11"/></svg><span><b>Importance score</b> — from 0 to 100, so what matters rises to the top.</span></li>
+            <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4.5 12.5 5 5 10-11"/></svg><span><b>Related screenshots</b> — similar and same-topic shots, one tap away.</span></li>
+          </ul>
+        </div>
+      </div>
     </div>
-  </div>
+  </section>
 
-  <!-- FEATURES -->
+  <!-- ═══ FEATURES ═══ -->
   <section id="features">
     <div class="wrap">
       <p class="eyebrow">Features</p>
       <h2>Built for the way you actually save things.</h2>
-      <div class="feat-grid">
+      <div class="feat-grid reveal">
         <div class="feat">
-          <div class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.2-3.2"/></svg></div>
+          <div class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.2-3.2"/></svg></div>
           <h3>Search by meaning</h3>
-          <p>Find screenshots using natural language, OCR text, categories, dates, prices and context — every result tells you why it matched.</p>
+          <p>Ask in your own words — "receipt from last week", "product under Rs 5000", "that React error". OCR text, semantic matching, categories, tags and dates all work together, and every result explains why it matched.</p>
         </div>
         <div class="feat">
-          <div class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6.5A2.5 2.5 0 0 1 6.5 4h11A2.5 2.5 0 0 1 20 6.5v8a2.5 2.5 0 0 1-2.5 2.5H9l-4.2 3.4a.8.8 0 0 1-1.3-.6Z"/></svg></div>
-          <h3>Ask your screenshots</h3>
-          <p>Chat with your screenshot library and get answers grounded in actual saved screenshots — every claim cites the shot it came from. General questions work too.</p>
+          <div class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6.5A2.5 2.5 0 0 1 6.5 4h11A2.5 2.5 0 0 1 20 6.5v8a2.5 2.5 0 0 1-2.5 2.5H9l-4.2 3.4a.8.8 0 0 1-1.3-.6Z"/></svg></div>
+          <h3>Chat with your screenshots</h3>
+          <p>Grounded AI chat about your own library. Answers cite the exact screenshots they came from — and general questions work too, beyond your library.</p>
         </div>
         <div class="feat">
-          <div class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 9 5-9 5-9-5Z"/><path d="m4.5 12.8 7.5 4.2 7.5-4.2"/><path d="m4.5 16.8 7.5 4.2 7.5-4.2"/></svg></div>
-          <h3>Automatic organization</h3>
-          <p>Screenshots are grouped by topic, category, date and relevance into smart collections — University, Travel, Receipts, Job Applications and more.</p>
+          <div class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 6h14"/><path d="M5 11h14"/><path d="M5 16h8"/></svg></div>
+          <h3>OCR-powered understanding</h3>
+          <p>ML Kit reads the text inside every screenshot on your phone — offline, accurate, and never uploaded for recognition.</p>
         </div>
         <div class="feat">
-          <div class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m19 4-7.5 7.5"/><path d="M11.5 11.5 6.7 16.3a4 4 0 0 0-1.2 2.9V21h1.8a4 4 0 0 0 2.9-1.2l4.8-4.8"/></svg></div>
+          <div class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3 9 5-9 5-9-5Z"/><path d="m4.5 12.8 7.5 4.2 7.5-4.2"/><path d="m4.5 16.8 7.5 4.2 7.5-4.2"/></svg></div>
+          <h3>AI summaries &amp; organization</h3>
+          <p>Each screenshot gets a title, a short summary, a category and tags — so a wall of images becomes a library you can actually browse.</p>
+        </div>
+        <div class="feat">
+          <div class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="7.4" height="7.4" rx="2"/><rect x="13.1" y="3.5" width="7.4" height="7.4" rx="2"/><rect x="3.5" y="13.1" width="7.4" height="7.4" rx="2"/><rect x="13.1" y="13.1" width="7.4" height="7.4" rx="2"/></svg></div>
+          <h3>Smart collections</h3>
+          <p>Screenshots are grouped into University, Travel, Receipts, Job Applications, Development Errors and more — automatically, plus your own collections.</p>
+        </div>
+        <div class="feat">
+          <div class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M9 4v16"/><path d="M4 9h16"/></svg></div>
+          <h3>Duplicate detection</h3>
+          <p>Exact and near-duplicates are matched with a similarity percentage, grouped together, and paired with a recommendation for which copy to keep.</p>
+        </div>
+        <div class="feat">
+          <div class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m19 4-7.5 7.5"/><path d="M11.5 11.5 6.7 16.3a4 4 0 0 0-1.2 2.9V21h1.8a4 4 0 0 0 2.9-1.2l4.8-4.8"/></svg></div>
           <h3>Safe cleanup</h3>
-          <p>Duplicates, blurred shots and expired codes are surfaced with reasons and estimated space savings. Nothing is ever deleted automatically — and Trash has Undo.</p>
+          <p>Duplicates, blurred shots, expired codes and low-value screenshots are surfaced with reasons and estimated space savings. Nothing is ever deleted automatically — deletions go to Trash with Undo.</p>
         </div>
         <div class="feat">
-          <div class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 6h14"/><path d="M5 11h14"/><path d="M5 16h8"/></svg></div>
-          <h3>On-device OCR</h3>
-          <p>ML Kit reads the text inside every screenshot fully offline — accurate, fast, and it never uploads your images for recognition.</p>
-        </div>
-        <div class="feat">
-          <div class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 5 5.8v5.4c0 4.6 3 8.1 7 9.8 4-1.7 7-5.2 7-9.8V5.8Z"/></svg></div>
-          <h3>Private by design</h3>
-          <p>Screenshots, text and indexes live on your phone. Cloud AI is opt-in, uses your own API key, and any screenshot can be excluded from it entirely.</p>
+          <div class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 5 5.8v5.4c0 4.6 3 8.1 7 9.8 4-1.7 7-5.2 7-9.8V5.8Z"/></svg></div>
+          <h3>Privacy controls</h3>
+          <p>Biometric or PIN app lock, blur protection for sensitive screenshots, and per-screenshot "Exclude from AI" — you decide what cloud AI can ever see.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- PRIVACY -->
-  <section id="privacy">
+  <!-- ═══ AI CHAT ═══ -->
+  <section id="brain">
     <div class="wrap">
-      <p class="eyebrow">Privacy</p>
-      <h2>What happens on your phone — and what never leaves it.</h2>
-      <p class="lede">No servers, no accounts, no analytics. Screenshot Brain is a local app with an optional bridge to Google's Gemini API that you control with your own key.</p>
-      <div class="split">
-        <div class="panel">
-          <h3>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 5 5.8v5.4c0 4.6 3 8.1 7 9.8 4-1.7 7-5.2 7-9.8V5.8Z"/></svg>
-            Stays on your device
-          </h3>
-          <ul>
-            <li>Screenshot copies, OCR text and the search index</li>
-            <li>OCR — ML Kit runs fully offline</li>
-            <li>Duplicate, blur and value analysis</li>
-            <li>Collections, tags and chat history</li>
-            <li>Your Gemini key and PIN (stored locally)</li>
+      <p class="eyebrow">Brain</p>
+      <h2>Chat with your screenshot memory.</h2>
+      <p class="lede">
+        The Brain is a personal assistant for your library. Ask in plain language — it reads your
+        screenshots' OCR text and AI metadata, then answers with numbered source citations linking
+        to the exact screenshots it used.
+      </p>
+      <div class="brain-split">
+        <div class="reveal">
+          <p style="font-weight:600; font-size:15.5px;">Questions it can answer:</p>
+          <div class="q-chips">
+            <span class="q-chip">What university fees did I save?</span>
+            <span class="q-chip">Find my internship screenshots.</span>
+            <span class="q-chip">What deadlines have I saved?</span>
+            <span class="q-chip">Show my Turkey travel screenshots.</span>
+            <span class="q-chip">What products was I considering buying?</span>
+          </div>
+          <p style="font-weight:600; font-size:15.5px; margin-top:26px;">And it goes beyond search:</p>
+          <ul class="check-list">
+            <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4.5 12.5 5 5 10-11"/></svg><span>Summarize this week's screenshots</span></li>
+            <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4.5 12.5 5 5 10-11"/></svg><span>Compare two screenshots side by side</span></li>
+            <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4.5 12.5 5 5 10-11"/></svg><span>Explain the error you screenshotted — or anything else</span></li>
           </ul>
+          <p class="grounded-note">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 5 5.8v5.4c0 4.6 3 8.1 7 9.8 4-1.7 7-5.2 7-9.8V5.8Z"/></svg>
+            If your library doesn't contain enough information, the Brain says so instead of guessing.
+            Chats are saved on this device — start new chats, rename, revisit or delete them anytime.
+          </p>
         </div>
-        <div class="panel cloud">
-          <h3>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="14.5" r="4"/><path d="m11 11.5 8-8"/><path d="m16 4.5 3 3"/><path d="m13.5 7 3 3"/></svg>
-            Goes to Gemini — only when you ask
-          </h3>
-          <ul>
-            <li>A downscaled screenshot, to generate titles, summaries and tags during import</li>
-            <li>Your question plus text excerpts of relevant screenshots for Ask Brain — never full-image dumps</li>
-            <li>Any screenshot you mark “Exclude from AI” is never sent</li>
-            <li>Requests use your own key and quota — the app has no server in between</li>
-          </ul>
+        <div class="reveal">
+          <p class="illus-tag">How a grounded answer looks</p>
+          <div class="grounded-card" role="img" aria-label="Example of a grounded Brain answer with numbered source citations">
+            <div class="who">
+              <span class="dot"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a4 4 0 0 0-4 4c0 .6.5 1 1 1h6c.5 0 1-.4 1-1a4 4 0 0 0-4-4Z"/><path d="M5 21v-1a6 6 0 0 1 6-6h2a6 6 0 0 1 6 6v1"/></svg></span>
+              <span><b>Brain</b><span>grounded in your screenshots</span></span>
+            </div>
+            <div class="q"><b>You:</b> What university fees did I save?</div>
+            <p class="answer">
+              You saved your <b>University of Karachi fee voucher for Fall 2026</b> — a total of
+              <b>48,500 PKR</b> (tuition 42,000 + lab 4,500 + library 2,000), due
+              <b>25 September</b> at Meezan Bank
+              <span class="cite">1</span><span class="cite">2</span>.
+              The voucher is for student <b>Ahmed Raza</b>, and you have 2 duplicate copies of it
+              <span class="cite">3</span>.
+            </p>
+            <p class="src-title">Sources</p>
+            <div class="src-row">
+              <span class="src"><img src="assets/thumb-fee.png" alt="Fee voucher screenshot thumbnail" loading="lazy" width="36" height="36" /><span><span class="n">[1]</span> <span class="t">University fee voucher — 48,500 PKR · Sep 9</span></span></span>
+              <span class="src"><img src="assets/thumb-flight.png" alt="Booking screenshot thumbnail" loading="lazy" width="36" height="36" /><span><span class="n">[2]</span> <span class="t">University fee voucher (copy) · Sep 9</span></span></span>
+              <span class="src"><img src="assets/thumb-code.png" alt="Code screenshot thumbnail" loading="lazy" width="36" height="36" /><span><span class="n">[3]</span> <span class="t">Fee voucher duplicate · Sep 9</span></span></span>
+            </div>
+          </div>
+          <p class="grounded-note">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v.01"/><path d="M11.5 12h.5v4h.5"/></svg>
+            Illustrative example. In the app, tapping a source opens the actual screenshot.
+          </p>
         </div>
       </div>
-      <p class="privacy-note">
-        Extra controls: biometric or PIN app lock, blur protection for sensitive screenshots, and a Trash with Undo so
-        permanent deletion always requires an explicit second confirmation.
-      </p>
     </div>
   </section>
-
-  <!-- HOW IT WORKS -->
+  <!-- ═══ HOW IT WORKS ═══ -->
   <section id="how">
     <div class="wrap">
       <p class="eyebrow">How it works</p>
       <h2>Five steps between clutter and memory.</h2>
-      <div class="steps">
-        <div class="step"><span><b>Import & index screenshots</b><p>Pick from the gallery, scan your Screenshots folder, or share straight from any app.</p></span></div>
-        <div class="step"><span><b>OCR extracts the text</b><p>ML Kit reads everything on-device, offline — even small UI text.</p></span></div>
-        <div class="step"><span><b>Screenshot Brain organizes them</b><p>Titles, categories, tags, entities and smart collections — with optional AI, or clean rules without it.</p></span></div>
-        <div class="step"><span><b>Search or ask questions</b><p>Natural-language search with match reasons, or a chat that cites your screenshots.</p></span></div>
-        <div class="step"><span><b>Clean what you don't need</b><p>Duplicates and expired shots, surfaced safely — you confirm, Trash keeps it reversible.</p></span></div>
+      <div class="steps reveal">
+        <div class="step"><span><b>Screenshot Brain indexes your screenshots</b><p>Pick them from the gallery, scan your Screenshots folder, or share them straight from any app. Everything is indexed locally.</p></span></div>
+        <div class="step"><span><b>OCR extracts the searchable information</b><p>ML Kit reads the text on-device, offline — every word becomes searchable, from fee amounts to flight numbers.</p></span></div>
+        <div class="step"><span><b>The app organizes them for you</b><p>Categories, tags and metadata turn the pile into a library — smart collections build themselves as your library grows.</p></span></div>
+        <div class="step"><span><b>Search naturally — or chat with your library</b><p>Ask the way you remember: "receipt from last week". Or ask the Brain a question and get a cited answer.</p></span></div>
+        <div class="step"><span><b>Review duplicates and clean up safely</b><p>Cleanup suggestions come with reasons and space estimates. You review and confirm — nothing is ever deleted on its own.</p></span></div>
       </div>
     </div>
   </section>
 
-  <!-- TECHNOLOGY -->
-  <section id="tech">
+  <!-- ═══ PRIVACY ═══ -->
+  <section id="privacy">
     <div class="wrap">
-      <p class="eyebrow">Technology</p>
-      <h2>Only what the app actually uses.</h2>
-      <div class="tech-row">
-        <span class="tech">React 19</span>
-        <span class="tech">TypeScript (strict)</span>
-        <span class="tech">Capacitor 8</span>
-        <span class="tech">Kotlin (Android host)</span>
-        <span class="tech">ML Kit Text Recognition</span>
-        <span class="tech">Gemini API (optional, your key)</span>
-        <span class="tech">IndexedDB</span>
-        <span class="tech">AndroidX Biometric</span>
-        <span class="tech">Android 8.0+</span>
+      <p class="eyebrow">Privacy</p>
+      <h2>What happens on your phone — and what never leaves it.</h2>
+      <p class="lede">
+        Screenshot Brain is a local app. There are no servers, no accounts and no analytics.
+        The one honest exception: optional AI features call Google's Gemini API directly from your
+        device, with your own key — and we say exactly what that sends.
+      </p>
+      <div class="split">
+        <div class="panel">
+          <h3>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 5 5.8v5.4c0 4.6 3 8.1 7 9.8 4-1.7 7-5.2 7-9.8V5.8Z"/></svg>
+            Stays local, always
+          </h3>
+          <ul>
+            <li>Your screenshot library and its local database</li>
+            <li>OCR — ML Kit runs fully offline, images never uploaded for recognition</li>
+            <li>Search index, categories, tags and smart collections</li>
+            <li>Duplicate, blur and importance analysis</li>
+            <li>Chat history, your Gemini key, your PIN</li>
+          </ul>
+        </div>
+        <div class="panel cloud">
+          <h3>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="14.5" r="4"/><path d="m11 11.5 8-8"/><path d="m16 4.5 3 3"/><path d="m13.5 7 3 3"/></svg>
+            Cloud AI — only when you choose
+          </h3>
+          <ul>
+            <li>Used for AI titles, summaries, tags and Brain chat — never for core features</li>
+            <li>Sends a downscaled image during import; Brain chat sends text excerpts, not full images</li>
+            <li>Any screenshot marked "Exclude from AI" is never sent</li>
+            <li>Requests go from your device to Gemini with your own key — no middleman server</li>
+          </ul>
+        </div>
+      </div>
+      <div class="privacy-notes">
+        <p>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4.5 12.5 5 5 10-11"/></svg>
+          <span><b>Screenshots are never automatically deleted.</b> Cleanup only suggests; deleting moves shots to Trash with Undo, and emptying Trash requires an explicit confirmation.</span>
+        </p>
+        <p>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4.5 12.5 5 5 10-11"/></svg>
+          <span><b>No "100% on-device AI" claims.</b> OCR, search and organization are on-device; the AI chat and summaries use Google's cloud Gemini API and are clearly labeled as such in the app.</span>
+        </p>
+        <p>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4.5 12.5 5 5 10-11"/></svg>
+          <span><b>Extra controls:</b> biometric or PIN app lock, blur protection for sensitive screenshots, and per-screenshot exclusion from AI.</span>
+        </p>
       </div>
     </div>
   </section>
 
-  <!-- FAQ -->
+  <!-- ═══ DOWNLOAD ═══ -->
+  <section id="download">
+    <div class="wrap">
+      <div class="download">
+        <p class="eyebrow" style="color:#7FC7A8;">Download</p>
+        <h2>Screenshot Brain for Android</h2>
+        <p class="lede">Grab the latest APK, import a few screenshots, and ask them something you forgot.</p>
+        <div class="meta-grid">
+          <div class="meta"><div class="k">Latest version</div><div class="v" data-apk-version>1.2.0</div></div>
+          <div class="meta"><div class="k">APK size</div><div class="v" data-apk-size>~45 MB</div></div>
+          <div class="meta"><div class="k">Requires</div><div class="v">Android 7.0+</div></div>
+          <div class="meta"><div class="k">Released</div><div class="v" data-apk-date>Sep 2026</div></div>
+        </div>
+        <div class="cta" style="margin-top:30px;">
+          <a class="btn btn-primary" data-apk-link href="https://github.com/iamcipherdev/screenshot-brain/releases/latest/download/ScreenshotBrain-v1.2.0.apk" target="_blank" rel="noopener">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11"/><path d="m7.5 10.5 4.5 4.5 4.5-4.5"/><path d="M5 19.5h14"/></svg>
+            Download APK
+          </a>
+          <a class="btn btn-ghost" data-release-link href="https://github.com/iamcipherdev/screenshot-brain/releases" target="_blank" rel="noopener">View Release on GitHub</a>
+        </div>
+        <p class="note">
+          <span data-apk-filename>ScreenshotBrain-v1.2.0.apk</span> · signed release build.
+          Android may ask you to allow installation from your browser — that's normal for apps
+          distributed outside Google Play. The APK is served directly from GitHub Releases, so this
+          button always points at the latest verified build.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ OPEN SOURCE ═══ -->
+  <section id="opensource">
+    <div class="wrap">
+      <p class="eyebrow">Open source</p>
+      <h2>Read every line before you trust it with your screenshots.</h2>
+      <p class="lede">
+        Screenshot Brain is MIT-licensed and developed in the open. The repository contains the full
+        source — app, native Android layer, tests, and build pipeline — plus honest documentation of
+        the architecture and the privacy model.
+      </p>
+      <div class="oss-grid reveal">
+        <div class="oss">
+          <h3>Architecture</h3>
+          <p>
+            A React + TypeScript UI runs inside a Capacitor shell on Android. A native plugin layer
+            handles ML Kit OCR, screenshot importing and biometric unlock. The library lives in a
+            local IndexedDB store with thumbnails and a perceptual-hash index, and the Gemini client
+            talks to Google's API directly from the device.
+          </p>
+        </div>
+        <div class="oss">
+          <h3>Technology stack</h3>
+          <p>Only what the app actually uses:</p>
+          <div class="tech-row">
+            <span class="tech">React 19</span>
+            <span class="tech">TypeScript</span>
+            <span class="tech">Capacitor 8</span>
+            <span class="tech">ML Kit OCR</span>
+            <span class="tech">Gemini API</span>
+            <span class="tech">IndexedDB</span>
+            <span class="tech">AndroidX Biometric</span>
+            <span class="tech">Gradle</span>
+          </div>
+        </div>
+        <div class="oss">
+          <h3>Privacy model</h3>
+          <p>
+            Documented in the README and in the app's Privacy page: what is local, what is cloud,
+            and what is sent when. No telemetry, no crash reporting, no analytics SDKs — the app
+            makes zero network calls unless you use an AI feature with your own key.
+          </p>
+        </div>
+      </div>
+      <div class="oss-cta">
+        <a class="btn btn-primary" href="https://github.com/iamcipherdev/screenshot-brain" target="_blank" rel="noopener">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.47v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.9-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.52 2.34 1.08 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.1.39-1.99 1.03-2.69-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02a9.56 9.56 0 0 1 5 0c1.91-1.3 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.6 1.03 2.69 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85V21c0 .27.16.58.67.48A10 10 0 0 0 22 12 10 10 0 0 0 12 2Z"/></svg>
+          View Source Code
+        </a>
+        <a class="btn" href="https://github.com/iamcipherdev/screenshot-brain/blob/main/README.md" target="_blank" rel="noopener">Read the README</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ FAQ ═══ -->
   <section id="faq">
     <div class="wrap">
       <p class="eyebrow">FAQ</p>
       <h2>Questions people actually ask.</h2>
       <div class="faq">
         <details>
-          <summary>Does Screenshot Brain upload my screenshots?</summary>
-          <p>No. Your library lives in the app's local storage. The only time content leaves the phone is when AI features are on: a downscaled copy is sent to Google's Gemini API with your own key to generate titles and summaries, and Ask Brain sends text excerpts (not full images) of relevant screenshots. You can exclude any screenshot from AI, or use the whole app without a key at all.</p>
+          <summary>What is Screenshot Brain?</summary>
+          <p>A free, open-source Android app that turns the screenshots piling up on your phone into searchable personal memory. It reads the text inside every screenshot (OCR), organizes them with categories, tags and smart collections, lets you search in plain language, and adds a grounded AI chat that answers questions about your library with source citations.</p>
         </details>
         <details>
-          <summary>Can it work offline?</summary>
-          <p>Yes — the core is fully offline. OCR (ML Kit), search, collections, timeline, cleanup analysis, and the library all work without internet. AI features (titles, tags, Ask Brain) show a clear offline state and resume when you reconnect.</p>
+          <summary>Does it upload my screenshots?</summary>
+          <p>Your library lives in the app's local storage on your phone. The only time content leaves the device is when you use an AI feature: those call Google's Gemini API directly from your phone with your own API key — a downscaled image is sent during import for titling, and Brain chat sends text excerpts of relevant screenshots rather than full images. Any screenshot you mark "Exclude from AI" is never sent, and without a key nothing is uploaded at all.</p>
+        </details>
+        <details>
+          <summary>Does the app work offline?</summary>
+          <p>Yes — the core is fully offline: OCR (on-device ML Kit), search, library, timeline, collections, cleanup analysis and duplicate detection all work without internet. AI features are cloud-based and show a clear offline/unavailable state when there's no connection.</p>
         </details>
         <details>
           <summary>Does it automatically delete screenshots?</summary>
-          <p>Never. Cleanup only suggests — every suggestion carries a reason and an estimated space saving. Deleting moves shots to Trash with Undo, and emptying the Trash requires an explicit confirmation. Your phone's gallery originals are never touched.</p>
+          <p>Never. Cleanup only makes suggestions — each one with a reason and an estimated space saving. You review and decide; deletions go to Trash with Undo, and emptying the Trash requires an explicit confirmation. Your phone's original gallery files are never touched.</p>
         </details>
         <details>
-          <summary>Is it free?</summary>
-          <p>The app is free and open source. AI features use your own free-tier Google Gemini API key, so there is no subscription and no hidden cost.</p>
+          <summary>How does AI chat work?</summary>
+          <p>You ask a question in plain language; the app finds the most relevant screenshots using OCR text and metadata, sends those text excerpts to Google's Gemini API with your question, and renders the answer with numbered source citations. Tapping a source opens the actual screenshot. If your library doesn't contain enough information, the Brain says so rather than guessing. General questions that don't need your library work too.</p>
         </details>
         <details>
           <summary>Which Android versions are supported?</summary>
-          <p>Android 8.0 (API 26) and above, including modern photo-permission handling on Android 13+ and partial gallery access on Android 14+.</p>
+          <p>Android 7.0 (API 24) and above — including modern photo permissions on Android 13+ and partial gallery access on Android 14+.</p>
         </details>
         <details>
-          <summary>How accurate is the OCR?</summary>
-          <p>Screenshots are ideal OCR input — clean digital text. Screenshot Brain feeds ML Kit a sharp 1600px frame for maximum accuracy and keeps the recognized text searchable on-device.</p>
+          <summary>Where can I download the latest APK?</summary>
+          <p>Right here — the Download section above always points at the latest signed release on GitHub Releases (the button fetches the newest published APK automatically). You can also browse all releases at github.com/iamcipherdev/screenshot-brain/releases. Since the app is distributed outside Google Play, Android may ask you to allow installation from your browser.</p>
         </details>
-      </div>
-    </div>
-  </section>
-
-  <!-- DOWNLOAD -->
-  <section>
-    <div class="wrap">
-      <div class="download">
-        <h2>Give your screenshots a brain.</h2>
-        <p class="lede">Download the latest APK, import a few screenshots, and ask them something you forgot.</p>
-        <div class="cta">
-          <a class="btn btn-primary" href="https://github.com/iamcipherdev/screenshot-brain/releases/latest" target="_blank" rel="noopener">Download latest APK</a>
-          <a class="btn btn-ghost" href="https://github.com/iamcipherdev/screenshot-brain" target="_blank" rel="noopener">Read the source</a>
-        </div>
-        <p class="note">v1.1.0 · Android 8.0+ · ScreenshotBrain-v1.1.0.apk</p>
+        <details>
+          <summary>Is the project open source?</summary>
+          <p>Yes, MIT-licensed. The full source code, architecture notes, privacy model and build instructions are on GitHub at github.com/iamcipherdev/screenshot-brain.</p>
+        </details>
       </div>
     </div>
   </section>
 </main>
 
 <footer class="site">
-  <div class="wrap foot">
-    <span class="made">made by <b>CIPHER</b></span>
-    <nav>
-      <a href="https://github.com/iamcipherdev/screenshot-brain" target="_blank" rel="noopener">GitHub</a>
-      <a href="https://github.com/iamcipherdev/screenshot-brain/releases" target="_blank" rel="noopener">Releases</a>
-      <a href="#privacy">Privacy</a>
-      <a href="#faq">FAQ</a>
-    </nav>
+  <div class="wrap">
+    <div class="foot-top">
+      <div>
+        <div class="foot-brand">
+          <img src="assets/icon.png" alt="Screenshot Brain icon" width="34" height="34" />
+          <b>Screenshot Brain</b>
+        </div>
+        <p class="made">made by <b>CIPHER</b></p>
+      </div>
+      <nav aria-label="Footer">
+        <a href="https://github.com/iamcipherdev/screenshot-brain" target="_blank" rel="noopener">GitHub</a>
+        <a data-apk-link href="https://github.com/iamcipherdev/screenshot-brain/releases/latest/download/ScreenshotBrain-v1.2.0.apk" target="_blank" rel="noopener">Download APK</a>
+        <a href="#privacy">Privacy</a>
+        <a href="#features">Features</a>
+        <a href="#faq">FAQ</a>
+        <a href="https://github.com/iamcipherdev/screenshot-brain/releases" target="_blank" rel="noopener">Releases</a>
+      </nav>
+    </div>
+    <div class="foot-bottom">
+      <span>Version <span data-apk-version-full>v1.2.0</span> · MIT License</span>
+      <span>Your screenshots remember everything.</span>
+    </div>
   </div>
 </footer>
+
+<script>
+  // ── Always link the latest GitHub Release APK ─────────────────────────────
+  (async () => {
+    var REPO = 'iamcipherdev/screenshot-brain';
+    var $all = function (sel) { return Array.prototype.slice.call(document.querySelectorAll(sel)); };
+    try {
+      var res = await fetch('https://api.github.com/repos/' + REPO + '/releases/latest', {
+        headers: { 'Accept': 'application/vnd.github+json' }
+      });
+      if (!res.ok) return;
+      var rel = await res.json();
+      var assets = rel.assets || [];
+      var apk = assets.filter(function (a) { return /\.apk$/i.test(a.name) && !/debug/i.test(a.name); })[0]
+              || assets.filter(function (a) { return /\.apk$/i.test(a.name); })[0];
+      if (apk) {
+        $all('[data-apk-link]').forEach(function (a) { a.href = apk.browser_download_url; });
+        $all('[data-apk-size]').forEach(function (el) { el.textContent = (apk.size / 1048576).toFixed(1) + ' MB'; });
+        $all('[data-apk-filename]').forEach(function (el) { el.textContent = apk.name; });
+      }
+      if (rel.html_url) {
+        $all('[data-release-link]').forEach(function (a) { a.href = rel.html_url; });
+      }
+      var version = (rel.tag_name || '').replace(/^v/, '');
+      if (version) {
+        $all('[data-apk-version]').forEach(function (el) { el.textContent = version; });
+        $all('[data-apk-version-full]').forEach(function (el) { el.textContent = rel.tag_name; });
+      }
+      if (rel.published_at) {
+        var d = new Date(rel.published_at);
+        var txt = d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+        $all('[data-apk-date]').forEach(function (el) { el.textContent = txt; });
+      }
+    } catch (e) { /* offline or rate-limited: static fallbacks above stay accurate */ }
+  })();
+
+  // ── Subtle reveal-on-scroll (progressive enhancement, respects reduced motion) ─
+  (function () {
+    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var els = Array.prototype.slice.call(document.querySelectorAll('.reveal'));
+    if (reduced || !els.length) return; // stay visible, no JS gating
+    document.documentElement.classList.add('io');
+    function update() {
+      var limit = window.innerHeight + 500;
+      els.forEach(function (el) {
+        if (!el.classList.contains('in') && el.getBoundingClientRect().top < limit) el.classList.add('in');
+      });
+    }
+    window.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+    update();
+    // failsafe: content must never stay hidden (print, capture, crawlers)
+    setTimeout(function () { els.forEach(function (el) { el.classList.add('in'); }); }, 4000);
+  })();
+</script>
+
 
 </body>
 </html>
