@@ -739,37 +739,48 @@
 
 <script>
   // ── Always link the latest GitHub Release APK ─────────────────────────────
-  (async () => {
+  (function () {
     var REPO = 'iamcipherdev/screenshot-brain';
     var $all = function (sel) { return Array.prototype.slice.call(document.querySelectorAll(sel)); };
-    try {
-      var res = await fetch('https://api.github.com/repos/' + REPO + '/releases/latest', {
-        headers: { 'Accept': 'application/vnd.github+json' }
+    function fallbackCheck() {
+      // API unavailable/rate-limited: make sure each static direct-asset link resolves,
+      // otherwise fall back to the always-valid releases page.
+      $all('[data-apk-link]').forEach(function (a) {
+        fetch(a.href, { method: 'HEAD' }).then(function (r) {
+          if (!r.ok) a.href = 'https://github.com/' + REPO + '/releases/latest';
+        }).catch(function () {});
       });
-      if (!res.ok) return;
-      var rel = await res.json();
-      var assets = rel.assets || [];
-      var apk = assets.filter(function (a) { return /\.apk$/i.test(a.name) && !/debug/i.test(a.name); })[0]
-              || assets.filter(function (a) { return /\.apk$/i.test(a.name); })[0];
-      if (apk) {
-        $all('[data-apk-link]').forEach(function (a) { a.href = apk.browser_download_url; });
-        $all('[data-apk-size]').forEach(function (el) { el.textContent = (apk.size / 1048576).toFixed(1) + ' MB'; });
-        $all('[data-apk-filename]').forEach(function (el) { el.textContent = apk.name; });
-      }
-      if (rel.html_url) {
-        $all('[data-release-link]').forEach(function (a) { a.href = rel.html_url; });
-      }
-      var version = (rel.tag_name || '').replace(/^v/, '');
-      if (version) {
-        $all('[data-apk-version]').forEach(function (el) { el.textContent = version; });
-        $all('[data-apk-version-full]').forEach(function (el) { el.textContent = rel.tag_name; });
-      }
-      if (rel.published_at) {
-        var d = new Date(rel.published_at);
-        var txt = d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
-        $all('[data-apk-date]').forEach(function (el) { el.textContent = txt; });
-      }
-    } catch (e) { /* offline or rate-limited: static fallbacks above stay accurate */ }
+    }
+    (async function () {
+      try {
+        var res = await fetch('https://api.github.com/repos/' + REPO + '/releases/latest', {
+          headers: { 'Accept': 'application/vnd.github+json' }
+        });
+        if (!res.ok) return fallbackCheck();
+        var rel = await res.json();
+        var assets = rel.assets || [];
+        var apk = assets.filter(function (a) { return /\.apk$/i.test(a.name) && !/debug/i.test(a.name); })[0]
+                || assets.filter(function (a) { return /\.apk$/i.test(a.name); })[0];
+        if (apk) {
+          $all('[data-apk-link]').forEach(function (a) { a.href = apk.browser_download_url; });
+          $all('[data-apk-size]').forEach(function (el) { el.textContent = (apk.size / 1048576).toFixed(1) + ' MB'; });
+          $all('[data-apk-filename]').forEach(function (el) { el.textContent = apk.name; });
+        }
+        if (rel.html_url) {
+          $all('[data-release-link]').forEach(function (a) { a.href = rel.html_url; });
+        }
+        var version = (rel.tag_name || '').replace(/^v/, '');
+        if (version) {
+          $all('[data-apk-version]').forEach(function (el) { el.textContent = version; });
+          $all('[data-apk-version-full]').forEach(function (el) { el.textContent = rel.tag_name; });
+        }
+        if (rel.published_at) {
+          var d = new Date(rel.published_at);
+          var txt = d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+          $all('[data-apk-date]').forEach(function (el) { el.textContent = txt; });
+        }
+      } catch (e) { fallbackCheck(); }
+    })();
   })();
 
   // ── Subtle reveal-on-scroll (progressive enhancement, respects reduced motion) ─
